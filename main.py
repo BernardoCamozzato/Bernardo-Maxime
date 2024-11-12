@@ -1,2 +1,3 @@
-print("Hello")
-print ("Neymar est trp fort whala !")
+import pygame
+from pygame.locals import *
+
