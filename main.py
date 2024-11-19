@@ -16,6 +16,16 @@ fond.rect.y = 0
 liste_des_sprites = pygame.sprite.LayeredUpdates()
 liste_des_sprites.add(fond)
 
+personage_1 = pygame.sprite.Sprite()
+pygame.sprite.Sprite.__init__(personage_1)
+personage_1.image = pygame.image.load("Personage_1.png").convert_alpha()
+personage_1.rect = personage_1.image.get_rect()
+personage_1.rect.centerx = fenetre.get_rect().centerx
+personage_1.rect.centery = 500
+liste_des_sprites.add(personage_1)
+
+
+
 
 
 continuer = True
@@ -23,9 +33,20 @@ continuer = True
 while continuer:
     liste_des_sprites.draw(fenetre)
     pygame.display.flip()
+    pygame.key.set_repeat(10, 50)
     for event in pygame.event.get():
         if event.type == QUIT:
             continuer = False
+        if event.type == KEYDOWN:
+            if event.key == K_UP :
+                personage_1.rect = personage_1.rect.move(0,-10)
+            if event.key == K_DOWN:
+                personage_1.rect = personage_1.rect.move(0,10)
+            if event.key == K_LEFT :
+                personage_1.rect = personage_1.rect.move(-10,0)
+            if event.key == K_RIGHT :
+                personage_1.rect = personage_1.rect.move(10,0)
+
 
 pygame.quit()
 
