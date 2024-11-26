@@ -21,7 +21,28 @@ class Bonus(pygame.sprite.Sprite):
 
 
 
-fenetre = pygame.display.set_mode((400, 600))
+
+
+class Missile(pygame.sprite.Sprite):
+    def __init__(self, x, y, speed):
+       super().__init__()
+       self.image = pygame.image.load("diddy.png").convert_alpha()
+       self.image = pygame.transform.scale(self.image,[20,30])
+       self.rect = self.image.get_rect()
+       self.rect.x = x
+       self.rect.y = y
+       self.speed = speed
+    def update(self):
+       self.rect.y += self.speed
+       if self.rect.bottom < 0:
+           self.kill()
+       if self.rect.top < 0:
+           self.kill()
+
+
+fenetre = pygame.display.set_mode((500, 600))
+
+clock = pygame.time.Clock()
 
 
 fond = pygame.sprite.Sprite()
@@ -42,31 +63,57 @@ personage_1.rect.centerx = fenetre.get_rect().centerx
 personage_1.rect.centery = 500
 liste_des_sprites.add(personage_1)
 
+personage_2 = pygame.sprite.Sprite()
+pygame.sprite.Sprite.__init__(personage_2)
+personage_2.image = pygame.image.load("image-removebg-preview .png").convert_alpha()
+personage_2.rect = personage_2.image.get_rect()
+personage_2.rect.centerx = fenetre.get_rect().centerx
+personage_2.rect.centery = 100
+liste_des_sprites.add(personage_2)
+
 
 
 
 
 continuer = True
-
+missiles = []
 while continuer:
+    clock.tick(100)
     liste_des_sprites.draw(fenetre)
     pygame.display.flip()
-    pygame.key.set_repeat(10, 50)
     for event in pygame.event.get():
         if event.type == QUIT:
             continuer = False
         if event.type == KEYDOWN:
-            if event.key == K_UP :
-                personage_1.rect = personage_1.rect.move(0,-10)
-            if event.key == K_DOWN:
-                personage_1.rect = personage_1.rect.move(0,10)
-            if event.key == K_LEFT :
-                personage_1.rect = personage_1.rect.move(-10,0)
-            if event.key == K_RIGHT :
-                personage_1.rect = personage_1.rect.move(10,0)
+            if event.key == K_l:
+                nouveau_missile = Missile(personage_1.rect.x + 10, personage_1.rect.y -5, -5)
+                missiles.append(nouveau_missile)
+                liste_des_sprites.add(nouveau_missile)
+            if event.key == K_y:
+                nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 5)
+                missiles.append(nouveau_missile)
+                liste_des_sprites.add(nouveau_missile)
+    for missile in missiles:
+        missile.update()
 
-
-
+    keys = pygame.key.get_pressed()
+    if keys [K_s]:
+        personage_2.rect.y += 2.3
+    if keys [K_w]:
+        personage_2.rect.y += -2.3
+    if keys [K_d]:
+        personage_2.rect.x += 2.3
+    if keys [K_a]:
+        personage_2.rect.x += -2.3
+    if keys [K_DOWN]:
+        personage_1.rect.y += 2.3
+    if keys [K_UP]:
+        personage_1.rect.y += -2.3
+    if keys [K_RIGHT]:
+        personage_1.rect.x += 2.3
+    if keys [K_LEFT]:
+        personage_1.rect.x += -2.3
 
 
 pygame.quit()
+

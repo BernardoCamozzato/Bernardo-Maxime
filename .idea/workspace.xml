@@ -7,6 +7,7 @@
     <list default="true" id="cbc073c4-2982-44c1-911a-b13fd297ae68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/Projet_Eval.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Projet_Eval.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -40,7 +41,9 @@
   "keyToString": {
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "classe__objet",
+
+    "git-widget-placeholder": "Perso2",
+
     "last_opened_file_path": "C:/Users/berna/PycharmProjects/Projet_Eval/.venv"
   }
 }]]></component>
