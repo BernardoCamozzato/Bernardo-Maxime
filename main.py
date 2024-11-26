@@ -1,7 +1,25 @@
 import pygame
+from pygame.examples.sprite_texture import sprite
 from pygame.locals import *
 
 pygame.init()
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self,x,y, point_de_vie):
+        super().__init__()
+        self.point_de_vie= point_de_vie
+        self.position_x= x
+        self.position_y=y
+
+    def casser(self, point_de_vie):
+        self.point_de_vie=point_de_vie
+        if self.point_de_vie<=0:
+            sprite.kill()
+
+class Bonus(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+
 
 
 
@@ -95,6 +113,7 @@ while continuer:
         personage_1.rect.x += 2.3
     if keys [K_LEFT]:
         personage_1.rect.x += -2.3
+
 
 pygame.quit()
 
