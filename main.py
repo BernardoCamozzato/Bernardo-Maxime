@@ -73,7 +73,8 @@ liste_des_sprites.add(personage_2)
 
 
 continuer = True
-missiles = []
+missiles_J1 = []
+missiles_J2 = []
 while continuer:
     clock.tick(100)
     liste_des_sprites.draw(fenetre)
@@ -84,14 +85,26 @@ while continuer:
         if event.type == KEYDOWN:
             if event.key == K_l:
                 nouveau_missile = Missile(personage_1.rect.x + 10, personage_1.rect.y -5, -5)
-                missiles.append(nouveau_missile)
+                missiles_J1.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
             if event.key == K_y:
-                nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 5)
-                missiles.append(nouveau_missile)
+                nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 4)
+                missiles_J2.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
-    for missile in missiles:
+    for missile in missiles_J1:
         missile.update()
+        if missile.rect.colliderect(personage_2):
+            print("col")
+            missiles_J1.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+    for missile in missiles_J2:
+        missile.update()
+        if missile.rect.colliderect(personage_1):
+            print("col")
+            missiles_J2.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
 
     keys = pygame.key.get_pressed()
     if keys [K_s]:
