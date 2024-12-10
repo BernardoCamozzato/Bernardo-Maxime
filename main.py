@@ -24,6 +24,7 @@ class Bonus(pygame.sprite.Sprite):
 
 class Missile(pygame.sprite.Sprite):
     degat = 1
+    pdv = 1
     def __init__(self, x, y, speed):
        super().__init__()
        self.image = pygame.image.load("diddy.png").convert_alpha()
@@ -32,6 +33,7 @@ class Missile(pygame.sprite.Sprite):
        self.rect.x = x
        self.rect.y = y
        self.speed = speed
+
     def update(self):
        self.rect.y += self.speed
        if self.rect.bottom < 0:
@@ -63,6 +65,13 @@ class personnage (pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y =  y
         liste_des_sprites.add(self)
+        self.pdv = points_de_vie
+    def perdre_pdv(self):
+        self.pdv-=1
+        if self.pdv <= 0 :
+            self.kill()
+            liste_des_sprites.remove(self)
+            self.rect.x = 1000000000
 
 
 personage_1 = personnage(liste_des_sprites, 220, 475, "Personage_1.png",10)
@@ -81,27 +90,35 @@ while continuer:
             continuer = False
         if event.type == KEYDOWN:
             if event.key == K_l:
-                nouveau_missile = Missile(personage_1.rect.x + 10, personage_1.rect.y -5, -5)
+                nouveau_missile = Missile(personage_1.rect.x + 10, personage_1.rect.y -5, -7)
                 missiles_J1.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
             if event.key == K_y:
-                nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 4)
+                nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 7)
                 missiles_J2.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
     for missile in missiles_J1:
         missile.update()
         if missile.rect.colliderect(personage_2):
-            print("AUHHH")
+            personage_2.perdre_pdv()
             missiles_J1.remove(missile)
             liste_des_sprites.remove(missile)
             missile.kill()
     for missile in missiles_J2:
         missile.update()
         if missile.rect.colliderect(personage_1):
-            print("AIII")
+            personage_1.perdre_pdv()
             missiles_J2.remove(missile)
             liste_des_sprites.remove(missile)
             missile.kill()
+        for autre_missile in missiles_J1 :
+            if missile.rect.colliderect(autre_missile) :
+                missiles_J2.remove(missile)
+                liste_des_sprites.remove(missile)
+                missile.kill()
+                missiles_J1.remove(autre_missile)
+                liste_des_sprites.remove(autre_missile)
+                autre_missile.kill()
 
     keys = pygame.key.get_pressed()
     if keys [K_s]:
