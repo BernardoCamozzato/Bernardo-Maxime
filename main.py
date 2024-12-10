@@ -1,5 +1,4 @@
 import pygame
-from pygame.examples.sprite_texture import sprite
 from pygame.locals import *
 
 pygame.init()
@@ -70,8 +69,6 @@ personage_2.rect = personage_2.image.get_rect()
 personage_2.rect.centerx = fenetre.get_rect().centerx
 personage_2.rect.centery = 100
 liste_des_sprites.add(personage_2)
-
-
 
 
 
