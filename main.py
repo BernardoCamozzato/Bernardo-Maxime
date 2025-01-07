@@ -3,20 +3,26 @@ from pygame.locals import *
 
 pygame.init()
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self,x,y, point_de_vie):
+    def __init__(self,x,y,image,point_de_vie):
         super().__init__()
+        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.transform.scale_by(self.image, 0.15)
+        self.rect = self.image.get_rect()
         self.point_de_vie= point_de_vie
-        self.position_x= x
-        self.position_y=y
+        self.rect.x=x
+        self.rect.y=y
+        liste_des_sprites.add(self)
 
-    def casser(self, point_de_vie):
-        self.point_de_vie=point_de_vie
+    def casser(self):
+        self.point_de_vie-=1
         if self.point_de_vie<=0:
-            sprite.kill()
+            self.kill()
+            self.rect.x = 1000000000
 
 class Bonus(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+
 
 
 
@@ -57,6 +63,7 @@ fond.rect.y = 0
 liste_des_sprites = pygame.sprite.LayeredUpdates()
 liste_des_sprites.add(fond)
 
+
 class personnage (pygame.sprite.Sprite):
     def __init__(self,liste_des_sprites, x,y, image, points_de_vie):
         super().__init__()
@@ -76,7 +83,10 @@ class personnage (pygame.sprite.Sprite):
 
 personage_1 = personnage(liste_des_sprites, 220, 475, "Personage_1.png",10)
 personage_2 = personnage(liste_des_sprites,230,20,"image-removebg-preview .png",10)
-
+obstacle_1 = Obstacle(130,360,"barril.png",6)
+obstacle_2 = Obstacle(370,190,"barril.png",7)
+obstacle_3 = Obstacle(60,150,"pierre.png",15)
+obstacle_4 = Obstacle(255,260,"pierre_2.png",15)
 
 continuer = True
 missiles_J1 = []
@@ -93,7 +103,7 @@ while continuer:
                 nouveau_missile = Missile(personage_1.rect.x + 10, personage_1.rect.y -5, -7)
                 missiles_J1.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
-            if event.key == K_y:
+            if event.key == K_r:
                 nouveau_missile = Missile(personage_2.rect.x + 10, personage_2.rect.y + 65, 7)
                 missiles_J2.append(nouveau_missile)
                 liste_des_sprites.add(nouveau_missile)
@@ -104,10 +114,52 @@ while continuer:
             missiles_J1.remove(missile)
             liste_des_sprites.remove(missile)
             missile.kill()
+
+        if missile.rect.colliderect(obstacle_1):
+            obstacle_1.casser()
+            missiles_J1.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_2):
+            obstacle_2.casser()
+            missiles_J1.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_3):
+            obstacle_3.casser()
+            missiles_J1.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_4):
+            obstacle_4.casser()
+            missiles_J1.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
     for missile in missiles_J2:
         missile.update()
         if missile.rect.colliderect(personage_1):
             personage_1.perdre_pdv()
+            missiles_J2.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+
+        if missile.rect.colliderect(obstacle_1):
+            obstacle_1.casser()
+            missiles_J2.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_2):
+            obstacle_2.casser()
+            missiles_J2.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_3):
+            obstacle_3.casser()
+            missiles_J2.remove(missile)
+            liste_des_sprites.remove(missile)
+            missile.kill()
+        if missile.rect.colliderect(obstacle_4):
+            obstacle_4.casser()
             missiles_J2.remove(missile)
             liste_des_sprites.remove(missile)
             missile.kill()
@@ -121,21 +173,48 @@ while continuer:
                 autre_missile.kill()
 
     keys = pygame.key.get_pressed()
-    if keys [K_s]:
+
+    rect_perso2 = personage_2.rect.copy()
+    rect_perso2.y += 5
+
+    if keys [K_s] and not rect_perso2.colliderect(obstacle_1) and not rect_perso2.colliderect(obstacle_2) and not rect_perso2.colliderect(obstacle_3) and not rect_perso2.colliderect(obstacle_4):
         personage_2.rect.y += 2.3
-    if keys [K_w]:
+
+    rect_perso2 = personage_2.rect.copy()
+    rect_perso2.y -= 5
+
+    if keys [K_w] and not rect_perso2.colliderect(obstacle_1)and not rect_perso2.colliderect(obstacle_2) and not rect_perso2.colliderect(obstacle_3) and not rect_perso2.colliderect(obstacle_4):
         personage_2.rect.y += -2.3
-    if keys [K_d]:
+
+    rect_perso2 = personage_2.rect.copy()
+    rect_perso2.x += 5
+    if keys [K_d] and not rect_perso2.colliderect(obstacle_1)and not rect_perso2.colliderect(obstacle_2) and not rect_perso2.colliderect(obstacle_3) and not rect_perso2.colliderect(obstacle_4):
         personage_2.rect.x += 2.3
-    if keys [K_a]:
+
+    rect_perso2 = personage_2.rect.copy()
+    rect_perso2.x -= 5
+    if keys [K_a] and not rect_perso2.colliderect(obstacle_1)and not rect_perso2.colliderect(obstacle_2) and not rect_perso2.colliderect(obstacle_3) and not rect_perso2.colliderect(obstacle_4):
         personage_2.rect.x += -2.3
-    if keys [K_DOWN]:
+
+    rect_perso1 = personage_1.rect.copy()
+    rect_perso1.y += 5
+
+    if keys [K_DOWN] and not rect_perso1.colliderect(obstacle_1)and not rect_perso1.colliderect(obstacle_2) and not rect_perso1.colliderect(obstacle_3) and not rect_perso1.colliderect(obstacle_4):
         personage_1.rect.y += 2.3
-    if keys [K_UP]:
+
+    rect_perso1 = personage_1.rect.copy()
+    rect_perso1.y -= 5
+    if keys [K_UP]  and not rect_perso1.colliderect(obstacle_1)and not rect_perso1.colliderect(obstacle_2) and not rect_perso1.colliderect(obstacle_3) and not rect_perso1.colliderect(obstacle_4):
         personage_1.rect.y += -2.3
-    if keys [K_RIGHT]:
+
+    rect_perso1 = personage_1.rect.copy()
+    rect_perso1.x += 5
+    if keys [K_RIGHT]  and not rect_perso1.colliderect(obstacle_1)and not rect_perso1.colliderect(obstacle_2) and not rect_perso1.colliderect(obstacle_3) and not rect_perso1.colliderect(obstacle_4):
         personage_1.rect.x += 2.3
-    if keys [K_LEFT]:
+
+    rect_perso1 = personage_1.rect.copy()
+    rect_perso1.x -= 5
+    if keys [K_LEFT]  and not rect_perso1.colliderect(obstacle_1)and not rect_perso1.colliderect(obstacle_2) and not rect_perso1.colliderect(obstacle_3) and not rect_perso1.colliderect(obstacle_4):
         personage_1.rect.x += -2.3
 
 
