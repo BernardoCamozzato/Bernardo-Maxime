@@ -3,21 +3,17 @@ from pygame.locals import *
 
 pygame.init()
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self,x,y,image,point_de_vie):
+
+    def __init__(self,x,y, point_de_vie, image):
         super().__init__()
-        self.image = pygame.image.load(image).convert_alpha()
-        self.image = pygame.transform.scale_by(self.image, 0.15)
-        self.rect = self.image.get_rect()
-        self.point_de_vie= point_de_vie
-        self.rect.x=x
-        self.rect.y=y
-        liste_des_sprites.add(self)
+        self.image= pygame.image.load(image).convert_alpha()
+        self.point_de_vie= 20
+        self.position_x= x
+        self.position_y= y
 
     def casser(self):
-        self.point_de_vie-=1
         if self.point_de_vie<=0:
             self.kill()
-            self.rect.x = 1000000000
 
 class Bonus(pygame.sprite.Sprite):
     def __init__(self):
