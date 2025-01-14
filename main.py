@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-pygame.init()
 
 
 def render_multi_line(text, x, y, fsize):
@@ -9,18 +8,25 @@ def render_multi_line(text, x, y, fsize):
     for i, l in enumerate(lines):
         fenetre.blit(police.render(l, 0, (206,206,206), ), (x, y + fsize * i))
 
-class Obstacle(pygame.sprite.Sprite):
 
-    def __init__(self,x,y, point_de_vie, image):
+
+pygame.init()
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self,x,y,image,point_de_vie):
         super().__init__()
-        self.image= pygame.image.load(image).convert_alpha()
-        self.point_de_vie= 20
-        self.position_x= x
-        self.position_y= y
+        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.transform.scale_by(self.image, 0.15)
+        self.rect = self.image.get_rect()
+        self.point_de_vie= point_de_vie
+        self.rect.x=x
+        self.rect.y=y
+        liste_des_sprites.add(self)
 
     def casser(self):
+        self.point_de_vie-=1
         if self.point_de_vie<=0:
             self.kill()
+            self.rect.x = 1000000000
 
 class Bonus(pygame.sprite.Sprite):
     def __init__(self):
@@ -67,10 +73,6 @@ liste_des_sprites = pygame.sprite.LayeredUpdates()
 liste_des_sprites.add(fond)
 
 
- ajout_commande
-
-
- master
 class personnage (pygame.sprite.Sprite):
     def __init__(self,liste_des_sprites, x,y, image, points_de_vie):
         super().__init__()
@@ -103,7 +105,6 @@ while continuer:
     liste_des_sprites.draw(fenetre)
     render_multi_line("Joueur 1\nW\nASD\n R pour tirer", 10, 10, 25)
     render_multi_line("Joueur 2\n flèches directionelles\n L pour tirer", 300, 20, 25)
-
     pygame.display.flip()
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -233,4 +234,3 @@ while continuer:
 
 
 pygame.quit()
-
