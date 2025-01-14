@@ -1,4 +1,5 @@
 import pygame
+from pygame.examples.grid import WINDOW_WIDTH, WINDOW_HEIGHT
 from pygame.locals import *
 
 
@@ -7,6 +8,18 @@ def render_multi_line(text, x, y, fsize):
     lines = text.splitlines()
     for i, l in enumerate(lines):
         fenetre.blit(police.render(l, 0, (206,206,206), ), (x, y + fsize * i))
+
+def afficher_game_over(fenetre, gagnant):
+    fenetre.fill((0, 0, 0))  # Fond noir
+    police = pygame.font.Font(None, 50)
+    texte = f"Game Over! {gagnant} gagne!"
+    text_surface = police.render(texte, True, (255, 0, 0))
+    text_rect = text_surface.get_rect(center=(250, 300))
+    fenetre.blit(text_surface, text_rect)
+    pygame.display.flip()
+    pygame.time.wait(3000)  # Pause de 3 secondes avant de quitter
+    pygame.quit()
+    exit()
 
 
 
@@ -94,7 +107,7 @@ personage_1 = personnage(liste_des_sprites, 220, 475, "Personage_1.png",10)
 personage_2 = personnage(liste_des_sprites,230,20,"image-removebg-preview .png",10)
 obstacle_1 = Obstacle(130,360,"barril.png",6)
 obstacle_2 = Obstacle(370,190,"barril.png",7)
-obstacle_3 = Obstacle(60,150,"pierre.png",15)
+obstacle_3 = Obstacle(60,150,"pierre.png",10)
 obstacle_4 = Obstacle(255,260,"pierre_2.png",15)
 
 continuer = True
@@ -182,6 +195,11 @@ while continuer:
                 missiles_J1.remove(autre_missile)
                 liste_des_sprites.remove(autre_missile)
                 autre_missile.kill()
+    # Vérification du Game Over
+    if personage_1.pdv <= 0:
+        afficher_game_over(fenetre, "Joueur 2")
+    elif personage_2.pdv <= 0:
+        afficher_game_over(fenetre, "Joueur 1")
 
     keys = pygame.key.get_pressed()
 
@@ -227,7 +245,6 @@ while continuer:
     rect_perso1.x -= 5
     if keys [K_LEFT]  and not rect_perso1.colliderect(obstacle_1)and not rect_perso1.colliderect(obstacle_2) and not rect_perso1.colliderect(obstacle_3) and not rect_perso1.colliderect(obstacle_4):
         personage_1.rect.x += -2.3
-
 
 
 
